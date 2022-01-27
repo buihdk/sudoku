@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
 
-import { Card, Content, Grid, Title, Numbers } from 'components'
+import { Card, Content, Grid, Numbers, Timer, Title } from 'components'
 import * as serviceWorkerRegistration from 'serviceWorkerRegistration'
 import reportWebVitals from 'reportWebVitals'
 import { GlobalStyles, theme } from 'styles'
@@ -19,6 +19,7 @@ ReactDOM.render(
           <Card data-cy="card">
             <Grid />
             <Numbers />
+            <Timer />
           </Card>
         </Content>
       </Provider>
