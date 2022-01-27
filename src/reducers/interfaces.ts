@@ -5,4 +5,5 @@ export interface IReducer {
   selectedBlock?: BLOCK_COORDS
   solvedGrid?: GRID
   workingGrid?: GRID
+  incorrectCount: number
 }
