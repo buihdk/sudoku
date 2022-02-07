@@ -6,4 +6,5 @@ export interface IReducer {
   solvedGrid?: GRID
   workingGrid?: GRID
   incorrectCount: number
+  completed: boolean
 }

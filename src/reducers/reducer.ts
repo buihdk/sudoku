@@ -6,7 +6,7 @@ import { compareArrays, copyGrid, createFullGrid, removeNumbers } from 'utils'
 import { IReducer } from './interfaces'
 import * as types from './types'
 
-const initialState: IReducer = { incorrectCount: 0 }
+const initialState: IReducer = { incorrectCount: 0, completed: false }
 
 const reducer = (state = initialState, action: AnyAction): IReducer => {
   switch (action.type) {
@@ -25,10 +25,14 @@ const reducer = (state = initialState, action: AnyAction): IReducer => {
           alert('Incorrect Option!')
           return { ...state, incorrectCount: state.incorrectCount + 1 }
         }
+
         state.workingGrid[action.coords[0]][action.coords[1]] = action.value
+
         if (compareArrays(state.workingGrid, state.solvedGrid)) {
           alert('Completed!')
+          return { ...state, completed: true }
         }
+
         return { ...state, workingGrid: [...state.workingGrid] as GRID }
       }
       return state
