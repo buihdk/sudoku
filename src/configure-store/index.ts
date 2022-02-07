@@ -3,7 +3,9 @@ import { devToolsEnhancer } from 'redux-devtools-extension'
 
 import reducer from 'reducers'
 
-const configureStore = (initialState = { incorrectCount: 0 }) => {
+const configureStore = (
+  initialState = { incorrectCount: 0, completed: false }
+) => {
   const store = createStore(reducer, initialState, devToolsEnhancer({}))
   return store
 }
