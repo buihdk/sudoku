@@ -76,7 +76,7 @@ const Grid: FC = () => {
         dispatch(fillBlock(n, state.selectedBlock))
       }
     },
-    [dispatch, state.selectedBlock]
+    [dispatch, state.selectedBlock, state.selectedValue]
   )
 
   const moveDown = () => {

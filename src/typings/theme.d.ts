@@ -1,4 +1,4 @@
-import 'styled-component'
+import 'styled-components'
 
 import { theme } from 'styles'
 

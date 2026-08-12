@@ -1,12 +1,16 @@
 import { AnyAction } from 'redux'
 
-import { GRID } from 'typings'
 import { compareArrays, copyGrid, createFullGrid, removeNumbers } from 'utils'
 
 import { IReducer } from './interfaces'
 import * as types from './types'
 
-const initialState: IReducer = { incorrectCount: 0, completed: false }
+const initialState: IReducer = {
+  incorrectCount: 0,
+  completed: false,
+  status: 'playing',
+  gameId: 0,
+}
 
 const reducer = (state = initialState, action: AnyAction): IReducer => {
   switch (action.type) {
@@ -15,25 +19,45 @@ const reducer = (state = initialState, action: AnyAction): IReducer => {
       const gridCopy = copyGrid(solvedGrid)
       const challengeGrid = removeNumbers(gridCopy)
       const workingGrid = copyGrid(challengeGrid)
-      return { ...state, challengeGrid, solvedGrid, workingGrid }
+      return {
+        ...state,
+        challengeGrid,
+        solvedGrid,
+        workingGrid,
+        selectedBlock: undefined,
+        incorrectCount: 0,
+        completed: false,
+        status: 'playing',
+        gameId: state.gameId + 1,
+      }
 
     case types.FILL_BLOCK:
-      if (state.workingGrid && state.solvedGrid) {
-        if (
-          state.solvedGrid[action.coords[0]][action.coords[1]] !== action.value
-        ) {
-          alert('Incorrect Option!')
-          return { ...state, incorrectCount: state.incorrectCount + 1 }
+      if (state.workingGrid && state.solvedGrid && !state.completed) {
+        const [row, col] = action.coords
+
+        if (state.workingGrid[row][col] !== 0) return state
+
+        if (state.solvedGrid[row][col] !== action.value) {
+          return {
+            ...state,
+            incorrectCount: state.incorrectCount + 1,
+            status: 'incorrect',
+          }
         }
 
-        state.workingGrid[action.coords[0]][action.coords[1]] = action.value
+        const nextGrid = copyGrid(state.workingGrid)
+        nextGrid[row][col] = action.value
 
-        if (compareArrays(state.workingGrid, state.solvedGrid)) {
-          alert('Completed!')
-          return { ...state, completed: true }
+        if (compareArrays(nextGrid, state.solvedGrid)) {
+          return {
+            ...state,
+            workingGrid: nextGrid,
+            completed: true,
+            status: 'completed',
+          }
         }
 
-        return { ...state, workingGrid: [...state.workingGrid] as GRID }
+        return { ...state, workingGrid: nextGrid, status: 'playing' }
       }
       return state
 
